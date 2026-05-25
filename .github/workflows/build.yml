@@ -48,7 +48,6 @@ jobs:
           libncursesw5-dev \
           libffi-dev \
           uuid-dev \
-          libffi7 \
           unzip \
           zip \
           openjdk-17-jdk \
