@@ -32,6 +32,7 @@ jobs:
           libavformat-dev \
           libavcodec-dev \
           zlib1g-dev \
+          libjpeg-dev \
           libgstreamer1.0-dev \
           gstreamer1.0-plugins-base \
           gstreamer1.0-plugins-good \
@@ -45,7 +46,9 @@ jobs:
           libgdbm-compat-dev \
           liblzma-dev \
           libreadline-dev \
+          libncurses5-dev \
           libncursesw5-dev \
+          libtinfo5 \
           libffi-dev \
           uuid-dev \
           unzip \
@@ -60,11 +63,15 @@ jobs:
     - name: Install Buildozer and Cython
       run: |
         pip install --upgrade pip
-        pip install buildozer cython virtualenv
+        # Forcing a stable version of Cython to prevent version mismatch crashes
+        pip install cython==0.29.33 virtualenv buildozer
 
     - name: Build APK with Buildozer
       run: |
-        yes | buildozer android debug
+        # Injecting system variables globally to guarantee automated agreement to Google terms
+        export APP_ANDROID_ACCEPT_SDK_LICENSE=1
+        export BUILDOZER_WARN_ON_ROOT=0
+        buildozer android debug
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
